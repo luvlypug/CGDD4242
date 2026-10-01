@@ -4,7 +4,7 @@
 PlayerSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 28
-  productGUID: 88a03df3443699242b7e98e6f179729b
+  productGUID: e1c001acafde02645a85770f484ae159
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
   AndroidEnableSustainedPerformanceMode: 0
@@ -12,7 +12,7 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: Team Pinball
+  companyName: Luvly Pug Games
   productName: Pinball
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
@@ -262,8 +262,8 @@ PlayerSettings:
   iOSAutomaticallyDetectAndAddCapabilities: 1
   appleEnableProMotion: 0
   shaderPrecisionModel: 0
-  clonedFromGUID: e1c001acafde02645a85770f484ae159
-  templatePackageId: template@1.0.0
+  clonedFromGUID: 3c72c65a16f0acb438eed22b8b16c24a
+  templatePackageId: com.unity.template.urp-blank@17.0.12
   templateDefaultScene: Assets/Scenes/SampleScene.unity
   useCustomMainManifest: 0
   useCustomLauncherManifest: 0
@@ -855,14 +855,14 @@ PlayerSettings:
   editorAssembliesCompatibilityLevel: 1
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: CGDD4242
+  metroPackageName: Template
   metroPackageVersion: 
   metroCertificatePath: 
   metroCertificatePassword: 
   metroCertificateSubject: 
   metroCertificateIssuer: 
   metroCertificateNotAfter: 0000000000000000
-  metroApplicationDescription: CGDD4242
+  metroApplicationDescription: Template
   wsaImages: {}
   metroTileShortName: 
   metroTileShowName: 0
@@ -933,10 +933,10 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 1
   windowsGamepadBackendHint: 0
-  cloudProjectId: df2abe9d-c45b-4416-ac55-bbdf6ca219ad
+  cloudProjectId: 49500753-5088-4cbf-baa3-ec521ea65654
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: CGDD4242
+  projectName: Template
   organizationId: carterconstruction
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0

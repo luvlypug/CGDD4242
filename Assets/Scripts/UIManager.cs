@@ -4,7 +4,8 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get; private set; }
 
-    public bool isPaused = false;
+    [HideInInspector] public bool isPaused = false;
+    [HideInInspector] public float currentTimeScale = 1;
 
     void Awake()
     {
@@ -17,15 +18,27 @@ public class UIManager : MonoBehaviour
         Instance = this;
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void OnPause()
     {
-        
+        if (!isPaused)
+        {
+            Pause();
+        }
+        else
+        {
+            Unpause();
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Pause()
     {
-        
+        isPaused = true;
+        Time.timeScale = 0;
+    }
+
+    public void Unpause()
+    {
+        isPaused = false;
+        Time.timeScale = currentTimeScale;
     }
 }

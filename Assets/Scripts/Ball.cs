@@ -8,7 +8,10 @@ public class Ball : MonoBehaviour
     public InputActionReference clickAction;
 
     [SerializeField] private float speed;
+    [SerializeField] private float aimTimeScale;
+
     private Rigidbody rb;
+    private bool wasClickIgnored = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -37,35 +40,57 @@ public class Ball : MonoBehaviour
         //rb.AddForce(launchDirection * power * speed, ForceMode.Impulse);
     }
 
+
     private void OnEnable()
     {
         clickAction.action.Enable();
         clickAction.action.performed += OnClickPerformed;
+        clickAction.action.canceled += OnClickReleased;
     }
 
     private void OnDisable()
     {
         clickAction.action.performed -= OnClickPerformed;
+        clickAction.action.canceled -= OnClickReleased;
         clickAction.action.Disable();
     }
 
     private void OnClickPerformed(InputAction.CallbackContext context)
     {
-        // Check if the pointer/mouse is over a UI element like a button
-        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+        // Check if the initial click started over a UI button
+        if (EventSystem.current != null && UIManager.Instance.isPaused)
         {
-            return; // Exit if clicking on UI
+            wasClickIgnored = true;
         }
+        else
+        {
+            wasClickIgnored = false;
+            SlowDown();
+        }
+    }
 
-        // For touch input, you can also check touch ID finger index if needed:
-        // if (EventSystem.current.IsPointerOverGameObject(Touchscreen.current.primaryTouch.touchId.ReadValue())) return;
-
-        SlowDown();
+    private void OnClickReleased(InputAction.CallbackContext context)
+    {
+        // If the click originally started on a UI button, ignore the release logic
+        if (!wasClickIgnored)
+        {
+            SpeedUp();
+        }
     }
 
     private void SlowDown()
     {
-        Time.timeScale = 0.5f;
+        UIManager.Instance.currentTimeScale = aimTimeScale;
+        Time.timeScale = UIManager.Instance.currentTimeScale;
     }
 
+    private void SpeedUp()
+    {
+        UIManager.Instance.currentTimeScale = 1;
+
+        if (!wasClickIgnored && !UIManager.Instance.isPaused)
+        {
+            Time.timeScale = UIManager.Instance.currentTimeScale;
+        }
+    }
 }

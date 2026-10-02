@@ -30,13 +30,13 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void Pause()
+    void Pause()
     {
         isPaused = true;
         Time.timeScale = 0;
     }
 
-    public void Unpause()
+    void Unpause()
     {
         isPaused = false;
         Time.timeScale = currentTimeScale;

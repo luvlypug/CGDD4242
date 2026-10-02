@@ -107,6 +107,16 @@
                     "priority": 0
                 },
                 {
+                    "name": "Cancel Launch",
+                    "type": "Button",
+                    "id": "1d1a6353-4496-4788-8410-82a45b2c376e",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false,
+                    "priority": 0
+                },
+                {
                     "name": "Pause",
                     "type": "Button",
                     "id": "cb7d02ef-d510-4bba-8eee-05c7a3d90623",
@@ -522,6 +532,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d1c55a3b-038b-4918-8005-d5436222de4f",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Cancel Launch",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

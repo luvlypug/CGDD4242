@@ -12,7 +12,7 @@ public class HopBall : MonoBehaviour
     public int rayCount = 24;
 
     // launch info
-    public float launchPower = 5f;
+    public float launchPower = 10f;
     private Vector3 bestDirection; 
 
     // timer for launchinf
@@ -23,11 +23,15 @@ public class HopBall : MonoBehaviour
     public float scanDist = 20f; 
 
     // decision variables
-    public float riskTolerance = 0.5f; 
+    public float riskTolerance = 0.1f; 
     public float threatRadius = 10f;
     public float collisionPrediction = 1f;
     public float threatTimer;
-    public float threatCheckCooldown = 0.1f; 
+    public float threatCheckCooldown = 0.1f;
+
+    // ability / skill 
+    public int abilityCost = 10; 
+    public int points = 20; // starting with some points for testing purposes :3 
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -103,7 +107,7 @@ public class HopBall : MonoBehaviour
                 float timeToImpact = distance / speed; 
 
                 if (timeToImpact < collisionPrediction) { 
-                    useHop();
+                    useHop(ball.transform.position);
                     return; 
                 } 
             }
@@ -123,6 +127,14 @@ public class HopBall : MonoBehaviour
             float angle = i * 15f;
             Vector3 direction = Quaternion.Euler(0, angle, 0) * Vector3.forward;
 
+            // draw every ray cuz this ball is stupid and i cant tell what its doing ever bruh 
+            Debug.DrawRay(
+                transform.position,
+                direction * scanDist,
+                Color.red,
+                3f
+            );
+
             float reward = 0f;
             float risk = 0f;
 
@@ -133,43 +145,70 @@ public class HopBall : MonoBehaviour
                 // point objects = good 
                 if (hit.collider.CompareTag("Point"))
                 {
-                    reward +=10f / Mathf.Max(hit.distance, 1f);
+                    Debug.Log("FOUND POINT");
+
+                    reward +=15f / Mathf.Max(hit.distance, 1f);
                 }
                 
                 // balls = risky 
                 if (hit.collider.CompareTag("Ball") && hit.collider.gameObject != gameObject)
                 {
-                    risk +=10f / Mathf.Max(hit.distance, 1f);
+                    risk +=20f / Mathf.Max(hit.distance, 1f);
                 }
                 
                 // ++ risk for danger 
                 if (hit.collider.CompareTag("Danger"))
                 {
-                    risk +=5f / Mathf.Max(hit.distance, 1f);
+                    Debug.Log("FOUND DANGER");
+
+                    risk +=20f / Mathf.Max(hit.distance, 1f);
                 }
             }
-            
+
+            Debug.Log($"Angle {angle}: Reward={reward:F2} Risk={risk:F2}");
+
             float utility =reward - (risk * (1f - riskTolerance));
-            
+
             if (utility > bestUtility)
             {
                 bestUtility = utility;
                 bestDirection = direction;
             }
         }
+
+        Debug.DrawRay(
+            transform.position,
+            bestDirection * scanDist,
+            Color.green,
+            3f
+        );
     }
 
     void Launch()
     {
+        //Debug.Log($"Launching with direction {bestDirection}");
+
         rb.linearVelocity = bestDirection * launchPower;
 
-        Debug.Log("Hop ball is launching!");
-
+        //Debug.Log($"New Velocity {rb.linearVelocity}"); 
     }
 
-    void useHop()
+    void useHop(Vector3 threatPosition)
     {
-        // left off here,, will pick up later!!
+        if (points < abilityCost)
+        {
+            Debug.Log("Hop ball did not have enough points to use hop");
+            return; 
+        }
+
+        points -= abilityCost;
+
+        // make sure direction is away from the treat 
+        Vector3 awayDirect = (transform.position - threatPosition).normalized;
+
+        // hop 
+        Vector3 hopDirect = awayDirect + Vector3.up;
+        rb.AddForce(Vector3.up * 3f, ForceMode.Impulse);
 
         Debug.Log("Hop ball used hop!!");
     }

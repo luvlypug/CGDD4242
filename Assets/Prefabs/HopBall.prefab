@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3537850597794600725}
   - component: {fileID: 7800317358611805512}
   - component: {fileID: 4175513039039550760}
+  - component: {fileID: -2950799240579950840}
   m_Layer: 0
   m_Name: HopBall
   m_TagString: Ball
@@ -68,7 +69,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: f967f32532a5a84429319c418586ec1a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -140,3 +141,26 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &-2950799240579950840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4583761389881507000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3803fd3ec498f874d831753f1405ac8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HopBall
+  rayCount: 24
+  launchPower: 10
+  launchCooldown: 3
+  scanDist: 20
+  riskTolerance: 0.1
+  threatRadius: 10
+  collisionPrediction: 1
+  threatTimer: 0
+  threatCheckCooldown: 0.1
+  abilityCost: 10
+  points: 20

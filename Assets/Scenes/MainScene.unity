@@ -677,15 +677,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a912f5ab87c29347a7bdca237112175, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Ball
-  clickAction: {fileID: -8612317302169038603, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  speed: 1
-  aimTimeScale: 0.1
-  rb: {fileID: 0}
-  wasClickIgnored: 0
-  isAiming: 0
-  maxPower: 10
-  startMousePos: {x: 0, y: 0, z: 0}
-  currentMousePos: {x: 0, y: 0, z: 0}
 --- !u!54 &797003446
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1738,11 +1729,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74e48c54256ccee449ed5d7d7f092c5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerBall
-  speed: 10
+  speed: 1
   rb: {fileID: 0}
   minPower: 1
   maxPower: 10
-  clickAction: {fileID: 0}
+  clickAction: {fileID: -8612317302169038603, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   aimTimeScale: 0.1
 --- !u!1001 &5373076766248741123
 PrefabInstance:

@@ -4,14 +4,19 @@ using UnityEngine.InputSystem;
 
 public class PlayerBall : Ball
 {
-    public InputActionReference clickAction;
+    [SerializeField] private InputActionReference clickAction;
+    [SerializeField] private GameObject powerBar;
+    [SerializeField] private RectTransform powerBarTail;
+    [SerializeField] private float aimTimeScale;
 
     private Vector3 startMousePos;
     private Vector3 currentMousePos;
     private bool wasClickIgnored = false;
     private bool isAiming = false;
+    private Vector3 launchDirection;
+    private float dragDistance;
+    private float power;
 
-    [SerializeField] private float aimTimeScale;
 
     // Update is called once per frame
     void Update()
@@ -19,6 +24,15 @@ public class PlayerBall : Ball
         if (isAiming && !UIManager.Instance.isPaused)
         {
             currentMousePos = GetMouseWorldPosition();
+
+            Vector2 dragVector = startMousePos - currentMousePos;
+            Vector3 normalizedDaunchDirection = dragVector.normalized;
+            launchDirection = new Vector3(normalizedDaunchDirection.x, 0, normalizedDaunchDirection.y);
+
+            dragDistance = dragVector.magnitude;
+            float power = Mathf.Max(minPower, Mathf.Min(dragDistance * 2, maxPower));
+
+            powerBarTail.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, (power - 1) / (maxPower - minPower) * 398 + 96);
         }
     }
 
@@ -67,12 +81,7 @@ public class PlayerBall : Ball
 
                 Debug.Log("Mouse released at: " + currentMousePos.x + ", " + currentMousePos.y);
 
-                Vector2 dragVector = startMousePos - currentMousePos;
-                Vector3 normalizedDaunchDirection = dragVector.normalized;
-                Vector3 launchDirection = new Vector3(normalizedDaunchDirection.x, 0, normalizedDaunchDirection.y);
-
-                float dragDistance = dragVector.magnitude;
-                float power = Mathf.Max(minPower, Mathf.Min(dragDistance * 2, maxPower));
+                
 
                 Debug.Log("X: " + launchDirection.x + " Z: " + launchDirection.z + " power: " + power);
 

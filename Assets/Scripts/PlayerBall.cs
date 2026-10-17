@@ -39,40 +39,46 @@ public class PlayerBall : Ball
     // Once left click is clicked
     void OnClickPerformed(InputAction.CallbackContext context)
     {
-        if (EventSystem.current != null && UIManager.Instance.isPaused)
+        if (canLaunch)
         {
-            wasClickIgnored = true;
-        }
-        else
-        {
-            wasClickIgnored = false;
-            isAiming = true;
-            startMousePos = GetMouseWorldPosition();
-            Debug.Log("Mouse clicked at: " + startMousePos.x + ", " + startMousePos.y);
-            SlowDown();
+            if (EventSystem.current != null && UIManager.Instance.isPaused)
+            {
+                wasClickIgnored = true;
+            }
+            else
+            {
+                wasClickIgnored = false;
+                isAiming = true;
+                startMousePos = GetMouseWorldPosition();
+                Debug.Log("Mouse clicked at: " + startMousePos.x + ", " + startMousePos.y);
+                SlowDown();
+            }
         }
     }
 
     // Once left click is released
     void OnClickReleased(InputAction.CallbackContext context)
     {
-        if (!wasClickIgnored)
+        if (canLaunch)
         {
-            isAiming = false;
+            if (!wasClickIgnored)
+            {
+                isAiming = false;
 
-            Debug.Log("Mouse released at: " + currentMousePos.x + ", " + currentMousePos.y);
+                Debug.Log("Mouse released at: " + currentMousePos.x + ", " + currentMousePos.y);
 
-            Vector2 dragVector = startMousePos - currentMousePos;
-            Vector3 normalizedDaunchDirection = dragVector.normalized;
-            Vector3 launchDirection = new Vector3(normalizedDaunchDirection.x, 0, normalizedDaunchDirection.y);
+                Vector2 dragVector = startMousePos - currentMousePos;
+                Vector3 normalizedDaunchDirection = dragVector.normalized;
+                Vector3 launchDirection = new Vector3(normalizedDaunchDirection.x, 0, normalizedDaunchDirection.y);
 
-            float dragDistance = dragVector.magnitude;
-            float power = Mathf.Max(minPower, Mathf.Min(dragDistance * 2, maxPower));
+                float dragDistance = dragVector.magnitude;
+                float power = Mathf.Max(minPower, Mathf.Min(dragDistance * 2, maxPower));
 
-            Debug.Log("X: " + launchDirection.x + " Z: " + launchDirection.z + " power: " + power);
+                Debug.Log("X: " + launchDirection.x + " Z: " + launchDirection.z + " power: " + power);
 
-            Launch(launchDirection, power);
-            SpeedUp();
+                Launch(launchDirection, power);
+                SpeedUp();
+            }
         }
     }
 

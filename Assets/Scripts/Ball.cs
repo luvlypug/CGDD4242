@@ -61,7 +61,7 @@ public class Ball : MonoBehaviour
             wasClickIgnored = false;
             isAiming = true;
             startMousePos = GetMouseWorldPosition();
-            Debug.Log("Mouse clicked at: " + startMousePos.x + ", " + startMousePos.y);
+            //Debug.Log("Mouse clicked at: " + startMousePos.x + ", " + startMousePos.y);
             SlowDown();
         }
     }
@@ -73,7 +73,7 @@ public class Ball : MonoBehaviour
         {
             isAiming = false;
 
-            Debug.Log("Mouse released at: " + currentMousePos.x + ", " + currentMousePos.y);
+            //Debug.Log("Mouse released at: " + currentMousePos.x + ", " + currentMousePos.y);
 
             Vector2 dragVector = startMousePos - currentMousePos;
             Vector3 normalizedDaunchDirection = dragVector.normalized;
@@ -82,7 +82,7 @@ public class Ball : MonoBehaviour
             float dragDistance = dragVector.magnitude;
             float power = Mathf.Min(dragDistance * 2, maxPower);
 
-            Debug.Log("X: " + launchDirection.x + " Z: " + launchDirection.z + " power: " + power);
+            //Debug.Log("X: " + launchDirection.x + " Z: " + launchDirection.z + " power: " + power);
 
             Launch(launchDirection, power);
             SpeedUp();

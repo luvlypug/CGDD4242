@@ -11,8 +11,8 @@ public class PlayerBall : Ball
     [SerializeField] private GameObject powerBar;
     [SerializeField] private RectTransform powerBarRect;
     [SerializeField] private RectTransform powerBarTailRect;
-    [SerializeField] private float uiMargin;
     [SerializeField] private float aimTimeScale;
+    // [SerializeField] private float uiMargin;
 
     private Vector3 startMousePos;
     private Vector3 currentMousePos;
@@ -42,10 +42,10 @@ public class PlayerBall : Ball
             launchDirection = new Vector3(normalizedLaunchDirection.x, 0, normalizedLaunchDirection.y);
 
             dragDistance = dragVector.magnitude;
-            power = Mathf.Max(minPower, Mathf.Min(dragDistance * 2, maxPower));
+            power = Mathf.Max(minPower, Mathf.Min(dragDistance * 5, maxPower));
 
             powerBarRect.localRotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(launchDirection.z, launchDirection.x) * Mathf.Rad2Deg + 180);
-            powerBarTailRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, (power - 1) / (maxPower - minPower) * 398 + 96);
+            powerBarTailRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, (power - 1) / (maxPower - minPower) * 240 + 96);
         }
     }
 
@@ -141,29 +141,20 @@ public class PlayerBall : Ball
         RectTransform parentRect = rectTransform.parent as RectTransform;
         if (parentRect == null) return;
 
-        // 1. Get raw screen mouse coordinates
-        Vector2 mouseScreenPos = Mouse.current.position.ReadValue();
+        RectTransform canvasRectTransform = canvas.transform as RectTransform;
+        Vector2 canvasSize = canvasRectTransform.rect.size;
 
-        // 2. Convert Screen pixels to a normalized value (0 to 1) across the entire monitor
-        float monitorXNorm = mouseScreenPos.x / Screen.width;
-        float monitorYNorm = mouseScreenPos.y / Screen.height;
-
-        // 3. Read your AspectRatioHandler limits from the camera's viewport rect
         Rect camRect = uiCamera.rect;
 
-        // 4. AUTOMATIC FIX: Calculate padding based on the actual size of the UI object
-        // This ensures the visual edges of the box stay clean out of the blackbars
-        float halfObjectWidth = rectTransform.rect.width * 0.5f;
-        float halfObjectHeight = rectTransform.rect.height * 0.5f;
+        float halfObjectWidth = 200;
+        float halfObjectHeight = 200;
 
-        float totalXPaddingPixels = halfObjectWidth + uiMargin;
-        float totalYPaddingPixels = halfObjectHeight + uiMargin;
+        float totalXPaddingUnits = halfObjectWidth; // + uiMargin;
+        float totalYPaddingUnits = halfObjectHeight; // + uiMargin;
 
-        // Convert the structural pixel boundaries into normalized percentages
-        float xMarginNorm = totalXPaddingPixels / Screen.width;
-        float yMarginNorm = totalYPaddingPixels / Screen.height;
+        float xMarginNorm = totalXPaddingUnits / canvasSize.x;
+        float yMarginNorm = totalYPaddingUnits / canvasSize.y;
 
-        // 5. Apply the margin to your camera bounds (inset the edges inward)
         float minX = camRect.xMin + xMarginNorm;
         float maxX = camRect.xMax - xMarginNorm;
         float minY = camRect.yMin + yMarginNorm;
@@ -172,24 +163,21 @@ public class PlayerBall : Ball
         if (minX > maxX) minX = maxX = camRect.center.x;
         if (minY > maxY) minY = maxY = camRect.center.y;
 
-        // 6. Clamp the coordinates using our new margin-inset boundaries
+        Vector2 mouseScreenPos = Mouse.current.position.ReadValue();
+        float monitorXNorm = mouseScreenPos.x / Screen.width;
+        float monitorYNorm = mouseScreenPos.y / Screen.height;
+
         float clampedMonitorX = Mathf.Clamp(monitorXNorm, minX, maxX);
         float clampedMonitorY = Mathf.Clamp(monitorYNorm, minY, maxY);
-
-        // 7. Convert those safe monitor screen percentages back into Canvas Pixels
-        RectTransform canvasRectTransform = canvas.transform as RectTransform;
-        Vector2 canvasSize = canvasRectTransform.rect.size;
 
         Vector2 canvasLocalPoint = new Vector2(
             (clampedMonitorX - canvasRectTransform.pivot.x) * canvasSize.x,
             (clampedMonitorY - canvasRectTransform.pivot.y) * canvasSize.y
         );
 
-        // 8. Translate safely from the main Canvas to your object's specific parent space
         Vector3 worldPosOnCanvas = canvasRectTransform.TransformPoint(canvasLocalPoint);
         Vector3 finalParentLocalPoint = parentRect.InverseTransformPoint(worldPosOnCanvas);
 
-        // 9. FORCE FLAT 2D: Reset Z completely so it never falls behind or clips under the camera plane
         rectTransform.anchoredPosition3D = new Vector3(finalParentLocalPoint.x, finalParentLocalPoint.y, 0f);
     }
 

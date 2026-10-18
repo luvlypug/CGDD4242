@@ -8,11 +8,12 @@ public class ScaredBall : Ball, IHitboxReceiver
     void Start()
     {
         //StartCoroutine(LaunchCooldown(1));
-        canAbility = true;
     }
 
     void Update()
     {
+        currentDirection = GetCurrentDirection();
+
         if (points >= maxPoints)
         {
             points = maxPoints;
@@ -25,12 +26,11 @@ public class ScaredBall : Ball, IHitboxReceiver
     {
         if (collider.gameObject.tag == "Ball")
         {
-            Debug.Log("hi");
             // Can use ability check
             if (canAbility)
             {
                 Ability();
-                //StartCoroutine(LaunchCooldown(1));
+                StartCoroutine(LaunchCooldown(0.1f));
             }
             // Can launch check
             else if (canLaunch)

@@ -13,6 +13,7 @@ public class PlayerBall : Ball
     [SerializeField] private RectTransform powerBarRect;
     [SerializeField] private RectTransform powerBarTailRect;
     [SerializeField] private TextMeshProUGUI pointsText;
+    [SerializeField] private float abilityPower;
     [SerializeField] private float aimTimeScale;
     // [SerializeField] private float uiMargin;
 
@@ -25,13 +26,15 @@ public class PlayerBall : Ball
     // Update is called once per frame
     void Update()
     {
-        pointsText.text = points.ToString();
+        currentDirection = GetCurrentDirection();
 
         if (points >= maxPoints)
         {
             points = maxPoints;
             canAbility = true;
         }
+
+        pointsText.text = points.ToString();
 
         if (isAiming && !UIManager.Instance.isPaused)
         {
@@ -131,7 +134,7 @@ public class PlayerBall : Ball
     {
         if (canAbility && !UIManager.Instance.isPaused)
         {
-            Ability();
+            Launch(currentDirection, abilityPower);
             points = 0;
             canAbility = false;
         }

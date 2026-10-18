@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -11,6 +12,8 @@ public class PlayerBall : Ball
     [SerializeField] private GameObject powerBar;
     [SerializeField] private RectTransform powerBarRect;
     [SerializeField] private RectTransform powerBarTailRect;
+    [SerializeField] private TextMeshProUGUI pointsText;
+    [SerializeField] private float abilityPower;
     [SerializeField] private float aimTimeScale;
     // [SerializeField] private float uiMargin;
 
@@ -19,14 +22,20 @@ public class PlayerBall : Ball
     private bool wasClickIgnored = false;
     private bool isAiming = false;
     private bool launchQueued = false;
-    private Vector3 launchDirection;
-    private float dragDistance;
-    private float power;
-
 
     // Update is called once per frame
     void Update()
     {
+        currentDirection = GetCurrentDirection();
+
+        if (points >= maxPoints)
+        {
+            points = maxPoints;
+            canAbility = true;
+        }
+
+        pointsText.text = points.ToString();
+
         if (isAiming && !UIManager.Instance.isPaused)
         {
             if (launchQueued)
@@ -41,7 +50,7 @@ public class PlayerBall : Ball
             Vector3 normalizedLaunchDirection = dragVector.normalized;
             launchDirection = new Vector3(normalizedLaunchDirection.x, 0, normalizedLaunchDirection.y);
 
-            dragDistance = dragVector.magnitude;
+            float dragDistance = dragVector.magnitude;
             power = Mathf.Max(minPower, Mathf.Min(dragDistance * 5, maxPower));
 
             powerBarRect.localRotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(launchDirection.z, launchDirection.x) * Mathf.Rad2Deg + 180);
@@ -118,6 +127,17 @@ public class PlayerBall : Ball
         powerBar.SetActive(false);
         Launch(launchDirection, power);
         SpeedUp();
+    }
+
+    // When spacebar is pressed
+    public override void Ability()
+    {
+        if (canAbility && !UIManager.Instance.isPaused)
+        {
+            Launch(currentDirection, abilityPower);
+            points = 0;
+            canAbility = false;
+        }
     }
 
     void SlowDown()

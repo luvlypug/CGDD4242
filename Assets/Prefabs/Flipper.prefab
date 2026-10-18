@@ -49,7 +49,7 @@ GameObject:
   - component: {fileID: 4618633053154382590}
   m_Layer: 0
   m_Name: Flipper
-  m_TagString: Untagged
+  m_TagString: Point
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -225,4 +225,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dedfee5ebcc3134497fab22e1a3572d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Flipper
+  amount: 50
   flipSpeed: -1500

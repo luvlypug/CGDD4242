@@ -280,6 +280,7 @@ MonoBehaviour:
   canLaunch: 1
   canAbility: 0
   points: 0
+  currentDirection: {x: 0, y: 0, z: 0}
   launchDirection: {x: 0, y: 0, z: 0}
   power: 0
   blastRadius: 5
@@ -2010,6 +2011,7 @@ MonoBehaviour:
   canLaunch: 1
   canAbility: 0
   points: 0
+  currentDirection: {x: 0, y: 0, z: 0}
   launchDirection: {x: 0, y: 0, z: 0}
   power: 0
   clickAction: {fileID: -8612317302169038603, guid: 052faaac586de48259a63d0c4782560b, type: 3}
@@ -2020,6 +2022,7 @@ MonoBehaviour:
   powerBarRect: {fileID: 1067470432}
   powerBarTailRect: {fileID: 993387440}
   pointsText: {fileID: 1733415908}
+  abilityPower: 30
   aimTimeScale: 0.1
 --- !u!1001 &5373076766248741123
 PrefabInstance:

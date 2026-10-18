@@ -3,9 +3,9 @@ using UnityEngine;
 
 public abstract class Ball : MonoBehaviour
 {
-    [SerializeField] public float speed;
-    [SerializeField] public float minPower;
-    [SerializeField] public float maxPower;
+    public float speed;
+    public float minPower;
+    public float maxPower;
 
     [HideInInspector] public Rigidbody rb;
     [HideInInspector] public bool canLaunch = true;
@@ -21,6 +21,14 @@ public abstract class Ball : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         canAbility = true;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Point")
+        {
+            points += collision.gameObject.GetComponent<Point>().amount;
+        }
     }
 
     public void Launch(Vector3 launchDirection, float power)

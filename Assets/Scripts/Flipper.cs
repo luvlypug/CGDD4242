@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Flipper : MonoBehaviour
+public class Flipper : Point
 {
     [SerializeField] private float flipSpeed;
     private HingeJoint hinge;

@@ -1048,7 +1048,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1067470432
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1252,8 +1252,8 @@ MonoBehaviour:
     m_ActionName: UI/TrackedDeviceOrientation
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Ball, Assembly-CSharp
+      - m_Target: {fileID: 2133091291}
+        m_TargetAssemblyTypeName: PlayerBall, Assembly-CSharp
         m_MethodName: OnCancelLaunch
         m_Mode: 1
         m_Arguments:

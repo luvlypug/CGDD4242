@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 
 public class PlayerBall : Ball
 {
@@ -13,6 +14,7 @@ public class PlayerBall : Ball
     private Vector3 currentMousePos;
     private bool wasClickIgnored = false;
     private bool isAiming = false;
+    private bool launchQueued = false;
     private Vector3 launchDirection;
     private float dragDistance;
     private float power;
@@ -23,6 +25,12 @@ public class PlayerBall : Ball
     {
         if (isAiming && !UIManager.Instance.isPaused)
         {
+            if (launchQueued)
+            {
+                LaunchPlayer();
+                launchQueued = false;
+            }
+
             currentMousePos = GetMouseWorldPosition();
 
             Vector2 dragVector = startMousePos - currentMousePos;
@@ -30,7 +38,7 @@ public class PlayerBall : Ball
             launchDirection = new Vector3(normalizedDaunchDirection.x, 0, normalizedDaunchDirection.y);
 
             dragDistance = dragVector.magnitude;
-            float power = Mathf.Max(minPower, Mathf.Min(dragDistance * 2, maxPower));
+            power = Mathf.Max(minPower, Mathf.Min(dragDistance * 2, maxPower));
 
             powerBarTail.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, (power - 1) / (maxPower - minPower) * 398 + 96);
         }
@@ -64,7 +72,7 @@ public class PlayerBall : Ball
                 wasClickIgnored = false;
                 isAiming = true;
                 startMousePos = GetMouseWorldPosition();
-                Debug.Log("Mouse clicked at: " + startMousePos.x + ", " + startMousePos.y);
+                powerBar.SetActive(true);
                 SlowDown();
             }
         }
@@ -73,20 +81,15 @@ public class PlayerBall : Ball
     // Once left click is released
     void OnClickReleased(InputAction.CallbackContext context)
     {
-        if (canLaunch)
+        if (isAiming)
         {
-            if (!wasClickIgnored)
+            if(UIManager.Instance.isPaused)
             {
-                isAiming = false;
-
-                Debug.Log("Mouse released at: " + currentMousePos.x + ", " + currentMousePos.y);
-
-                
-
-                Debug.Log("X: " + launchDirection.x + " Z: " + launchDirection.z + " power: " + power);
-
-                Launch(launchDirection, power);
-                SpeedUp();
+                launchQueued = true;
+            }
+            else if (!wasClickIgnored)
+            {
+                LaunchPlayer();
             }
         }
     }
@@ -94,8 +97,20 @@ public class PlayerBall : Ball
     // When right click is clicked
     public void OnCancelLaunch()
     {
-        wasClickIgnored = true;
+        if (!UIManager.Instance.isPaused)
+        {
+            wasClickIgnored = true;
+            isAiming = false;
+            powerBar.SetActive(false);
+            SpeedUp();
+        }
+    }
+
+    void LaunchPlayer()
+    {
         isAiming = false;
+        powerBar.SetActive(false);
+        Launch(launchDirection, power);
         SpeedUp();
     }
 

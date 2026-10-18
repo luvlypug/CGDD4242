@@ -21,7 +21,7 @@ public class Flipper : MonoBehaviour
     }
 
     // Call this to forcefully fling the lever forward
-    public void FlingLeverForward()
+    public void FlipperUp()
     {
         JointMotor motor = hinge.motor;
         motor.targetVelocity = flipSpeed;
@@ -31,7 +31,7 @@ public class Flipper : MonoBehaviour
     }
 
     // Call this to reset it
-    public void ResetLever()
+    public void FlipperDown()
     {
         JointMotor motor = hinge.motor;
         motor.targetVelocity = -flipSpeed;
@@ -41,10 +41,10 @@ public class Flipper : MonoBehaviour
 
     public IEnumerator FlipFlipper()
     {
-        FlingLeverForward();
+        FlipperUp();
 
         yield return new WaitForSeconds(0.2f);
 
-        ResetLever();
+        FlipperDown();
     }
 }

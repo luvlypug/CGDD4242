@@ -154,7 +154,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Twinball
   speed: 1
-  rb: {fileID: 0}
   minPower: 1
   maxPower: 10
+  rb: {fileID: 0}
   canLaunch: 1
+  canAbility: 0
+  points: 0
+  currentDirection: {x: 0, y: 0, z: 0}
+  launchDirection: {x: 0, y: 0, z: 0}
+  power: 0
+  detectionRadius: 15
+  launchPower: 10
+  thinkInterval: 1
+  twinballPrefab: {fileID: 0}
+  cloneLifetime: 8
+  cloneforce: 1
+  abilityRange: 5
+  coolDown: 10
+  isClone: 1

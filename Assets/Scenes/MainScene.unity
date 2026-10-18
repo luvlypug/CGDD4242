@@ -1921,11 +1921,14 @@ MonoBehaviour:
   rb: {fileID: 0}
   minPower: 1
   maxPower: 10
-  cooldownTime: 1
   canLaunch: 1
   clickAction: {fileID: -8612317302169038603, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  canvasRect: {fileID: 1605538151}
+  uiCamera: {fileID: 747943202}
+  canvas: {fileID: 1605538150}
   powerBar: {fileID: 1067470431}
-  powerBarTail: {fileID: 993387440}
+  powerBarRect: {fileID: 1067470432}
+  powerBarTailRect: {fileID: 993387440}
   aimTimeScale: 0.1
 --- !u!1001 &5373076766248741123
 PrefabInstance:

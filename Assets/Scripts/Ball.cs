@@ -9,7 +9,6 @@ public abstract class Ball : MonoBehaviour
     [HideInInspector] public Rigidbody rb;
     [HideInInspector] public float minPower = 1;
     [HideInInspector] public float maxPower = 10;
-    [HideInInspector] public float cooldownTime = 1;
     [HideInInspector] public bool canLaunch = true;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

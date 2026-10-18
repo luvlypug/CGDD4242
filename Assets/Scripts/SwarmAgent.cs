@@ -1,18 +1,12 @@
-using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
-public class SwarmAgent : MonoBehaviour
+public class SwarmAgent : Ball
 {
-    private Rigidbody rb;
-
     public int rayCount = 24;
     public float scanDist = 20f;
 
     public float launchPower = 5f;
-    public float cooldownPerPower = 0.6f;
-    private float launchTimer;
-    private float currentCooldown;
     private Vector3 bestDirection = Vector3.forward;
 
     public float riskTolerance = 0.5f;
@@ -30,10 +24,11 @@ public class SwarmAgent : MonoBehaviour
     public float proximityWeight = 0.3f;
     public float clusterWeight = 0.3f;
     public float clusterRadius = 4f;
-    public float useSwarmThreshold = 0.55f;
-    public float thresholdDecayPerSecond = 0.03f;
-    public float minThreshold = 0.2f;
-    public float swarmRange = 5f;
+    public float useSwarmThreshold = 0.35f;
+    public float thresholdDecayPerSecond = 0.1f;
+    public float minThreshold = 0.1f;
+    public float swarmRange = 6f;
+    public bool debugOpportunity = false;
 
     public int abilityCost = 50;
     public GameObject miniBallPrefab;
@@ -50,16 +45,9 @@ public class SwarmAgent : MonoBehaviour
         get { return Points >= abilityCost; }
     }
 
-    void Start()
-    {
-        rb = GetComponent<Rigidbody>();
-        currentCooldown = launchPower * cooldownPerPower;
-    }
-
     void Update()
     {
         opportunityTimer += Time.deltaTime;
-        launchTimer += Time.deltaTime;
 
         if (AbilityReady && abilityReadySince < 0f)
         {
@@ -72,11 +60,10 @@ public class SwarmAgent : MonoBehaviour
             CheckOpportunity();
         }
 
-        if (launchTimer > currentCooldown)
+        if (canLaunch)
         {
-            launchTimer = 0f;
             ChooseBestDirection();
-            Launch();
+            LaunchAlongBest();
         }
     }
 
@@ -87,50 +74,58 @@ public class SwarmAgent : MonoBehaviour
             return;
         }
 
-        GameObject[] balls = GameObject.FindGameObjectsWithTag("Ball");
+        Collider[] hits = Physics.OverlapSphere(transform.position, opportunityRadius);
+        List<Rigidbody> targets = new List<Rigidbody>();
+
+        foreach (Collider hit in hits)
+        {
+            if (!hit.CompareTag("Ball"))
+            {
+                continue;
+            }
+
+            Rigidbody targetRb = hit.attachedRigidbody;
+
+            if (targetRb == null || targetRb == rb || targets.Contains(targetRb))
+            {
+                continue;
+            }
+
+            targets.Add(targetRb);
+        }
+
+        if (targets.Count == 0)
+        {
+            if (debugOpportunity)
+            {
+                Debug.Log("Swarm: ability ready but no tagged Ball targets in radius");
+            }
+
+            return;
+        }
 
         float bestUtility = 0f;
         float bestDistance = float.MaxValue;
-        bool found = false;
 
-        foreach (GameObject ball in balls)
+        foreach (Rigidbody target in targets)
         {
-            if (ball == gameObject)
-            {
-                continue;
-            }
-
-            Rigidbody enemyRb = ball.GetComponent<Rigidbody>();
-
-            if (enemyRb == null)
-            {
-                continue;
-            }
-
-            float distance = FlatDistance(transform.position, ball.transform.position);
-
-            if (distance > opportunityRadius)
-            {
-                continue;
-            }
-
-            float utility = TargetUtility(enemyRb, distance, balls);
+            float distance = FlatDistance(transform.position, target.position);
+            float utility = TargetUtility(target, distance, targets);
 
             if (utility > bestUtility)
             {
                 bestUtility = utility;
                 bestDistance = distance;
-                found = true;
             }
-        }
-
-        if (!found)
-        {
-            return;
         }
 
         float heldFor = Time.time - abilityReadySince;
         float threshold = Mathf.Max(minThreshold, useSwarmThreshold - heldFor * thresholdDecayPerSecond);
+
+        if (debugOpportunity)
+        {
+            Debug.Log("Swarm: utility " + bestUtility + " threshold " + threshold + " distance " + bestDistance);
+        }
 
         if (bestUtility >= threshold && bestDistance <= swarmRange)
         {
@@ -138,21 +133,21 @@ public class SwarmAgent : MonoBehaviour
         }
     }
 
-    float TargetUtility(Rigidbody target, float distance, GameObject[] allBalls)
+    float TargetUtility(Rigidbody target, float distance, List<Rigidbody> allTargets)
     {
         float speedScore = Mathf.Clamp01(Flat(target.linearVelocity).magnitude / maxExpectedBallSpeed);
         float proximityScore = 1f - Mathf.Clamp01(distance / opportunityRadius);
 
         int neighbors = 0;
 
-        foreach (GameObject other in allBalls)
+        foreach (Rigidbody other in allTargets)
         {
-            if (other == gameObject || other == target.gameObject)
+            if (other == target)
             {
                 continue;
             }
 
-            if (FlatDistance(other.transform.position, target.position) <= clusterRadius)
+            if (FlatDistance(other.position, target.position) <= clusterRadius)
             {
                 neighbors++;
             }
@@ -237,10 +232,10 @@ public class SwarmAgent : MonoBehaviour
         }
     }
 
-    void Launch()
+    void LaunchAlongBest()
     {
-        rb.linearVelocity = bestDirection * launchPower;
-        currentCooldown = launchPower * cooldownPerPower;
+        float power = Mathf.Clamp(launchPower, minPower, maxPower);
+        Launch(bestDirection, power);
     }
 
     void UseSwarm()
@@ -300,5 +295,3 @@ public class SwarmAgent : MonoBehaviour
         return Flat(a - b).magnitude;
     }
 }
-
-

@@ -21,12 +21,11 @@ public class Twinball : Ball
     // Clone-specific flag
     private bool isClone = false;
 
-    private Vector3 currentDirection = Vector3.forward;
 
     private static int nextFamilyID = 1;
 
     //we mentioned that the player might have acess to the abilities so imma just do this quick and dirty way to make sure twinballs can fight other twinball
-    private void Awake()
+    private void Start()
     {
         if (familyID == 0)
         {
@@ -89,7 +88,7 @@ public class Twinball : Ball
         return finalDirection.normalized;
     }
 
-    public void Split()
+    public override void Ability()
     {
         if (isClone || twinballPrefab == null)
             return;

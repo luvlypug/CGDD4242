@@ -2,9 +2,13 @@ using UnityEngine;
 
 public class ScaredBall : Ball, IHitboxReceiver
 {
+    [SerializeField] private float blastRadius;
+    [SerializeField] private float blastPower;
+
     void Start()
     {
         //StartCoroutine(LaunchCooldown(1));
+        canAbility = true;
     }
 
     void Update()
@@ -52,10 +56,24 @@ public class ScaredBall : Ball, IHitboxReceiver
     {
         if (canAbility && !UIManager.Instance.isPaused)
         {
+            Vector3 blastPos = transform.position;
+            Collider[] colliders = Physics.OverlapSphere(blastPos, blastRadius);
+
+            foreach (Collider hit in colliders)
+            {
+                if (hit.gameObject == gameObject) continue;
+
+                if (hit.gameObject.tag == "Ball")
+                {
+                    Rigidbody hitRB = hit.GetComponent<Rigidbody>();
+                    Vector3 direction = hit.transform.position - blastPos;
+                    direction.y = 0;
+                    hitRB.AddForce(direction.normalized * blastPower, ForceMode.Impulse);
+                }
+            }
 
             points = 0;
             canAbility = false;
         }
     }
-
 }

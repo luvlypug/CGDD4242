@@ -1929,6 +1929,7 @@ MonoBehaviour:
   powerBar: {fileID: 1067470431}
   powerBarRect: {fileID: 1067470432}
   powerBarTailRect: {fileID: 993387440}
+  uiMargin: 0
   aimTimeScale: 0.1
 --- !u!1001 &5373076766248741123
 PrefabInstance:

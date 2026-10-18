@@ -44,6 +44,7 @@ public class PlayerBall : Ball
             dragDistance = dragVector.magnitude;
             power = Mathf.Max(minPower, Mathf.Min(dragDistance * 2, maxPower));
 
+            powerBarRect.localRotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(launchDirection.z, launchDirection.x) * Mathf.Rad2Deg + 180);
             powerBarTailRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, (power - 1) / (maxPower - minPower) * 398 + 96);
         }
     }

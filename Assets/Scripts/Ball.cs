@@ -20,7 +20,6 @@ public abstract class Ball : MonoBehaviour
     public void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        canAbility = true;
     }
 
     private void OnCollisionEnter(Collision collision)

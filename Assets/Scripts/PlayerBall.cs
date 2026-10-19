@@ -134,7 +134,8 @@ public class PlayerBall : Ball
     {
         if (canAbility && !UIManager.Instance.isPaused)
         {
-            Launch(currentDirection, abilityPower);
+            Launch(currentDirection, abilityPower, false);
+
             points = 0;
             canAbility = false;
         }

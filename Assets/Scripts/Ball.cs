@@ -30,15 +30,18 @@ public abstract class Ball : MonoBehaviour
         }
     }
 
-    public void Launch(Vector3 launchDirection, float power)
+    public void Launch(Vector3 launchDirection, float power, bool useCooldown = true)
     {
         rb.linearVelocity = launchDirection * power * speed;
         //rb.AddForce(launchDirection * power * speed, ForceMode.Impulse);
 
-        StartCoroutine(LaunchCooldown(power / (maxPower - minPower) + 0.1f));
+        if (useCooldown)
+        {
+            StartCoroutine(LaunchCooldown(power / (maxPower - minPower) * 1.5f + 0.5f));
+        }
     }
 
-    public void Launch(float launchAngleInDegrees, float power)
+    public void Launch(float launchAngleInDegrees, float power, bool useCooldown = true)
     {
         float angleInRadians = launchAngleInDegrees * Mathf.Deg2Rad;
 
@@ -50,7 +53,10 @@ public abstract class Ball : MonoBehaviour
         rb.linearVelocity = launchDirection * power * speed;
         //rb.AddForce(launchDirection * power * speed, ForceMode.Impulse);
 
-        StartCoroutine(LaunchCooldown(power / (maxPower - minPower) * 1.5f + 0.5f));
+        if (useCooldown)
+        {
+            StartCoroutine(LaunchCooldown(power / (maxPower - minPower) * 1.5f + 0.5f));
+        }
     }
 
     public abstract void Ability();

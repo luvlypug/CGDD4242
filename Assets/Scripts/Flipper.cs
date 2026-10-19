@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Flipper : Point
+public class Flipper : Point, IHitboxReceiver
 {
     [SerializeField] private float flipSpeed;
     private HingeJoint hinge;
@@ -12,9 +12,9 @@ public class Flipper : Point
         hinge.useMotor = false;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    public void OnHitboxEnter(Collider collider)
     {
-        if (collision.gameObject.tag == "Ball")
+        if (collider.gameObject.tag == "Ball")
         {
             Coroutine coroutine = StartCoroutine(FlipFlipper());
         }

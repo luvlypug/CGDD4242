@@ -15,11 +15,13 @@ public abstract class Ball : MonoBehaviour
     [HideInInspector] public Vector3 currentDirection;
     [HideInInspector] public Vector3 launchDirection;
     [HideInInspector] public float power;
+    [HideInInspector] public bool isEliminated;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        //StartCoroutine(LaunchCooldown(1));
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -27,6 +29,28 @@ public abstract class Ball : MonoBehaviour
         if (collision.gameObject.tag == "Point")
         {
             points += collision.gameObject.GetComponent<Point>().amount;
+        }
+    }
+
+    private void OnTriggerEnter(Collider collider)
+    {
+        if (collider.gameObject.tag == "Deadzone")
+        {
+            canLaunch = false;
+        }
+
+        if (collider.gameObject.name == "End")
+        {
+            isEliminated = true;
+            gameObject.SetActive(false);
+        }
+    }
+
+    private void OnTriggerExit(Collider collider)
+    {
+        if (collider.gameObject.tag == "Deadzone")
+        {
+            canLaunch = true;
         }
     }
 

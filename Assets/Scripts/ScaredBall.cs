@@ -5,11 +5,6 @@ public class ScaredBall : Ball, IHitboxReceiver
     [SerializeField] private float blastRadius;
     [SerializeField] private float blastPower;
 
-    void Start()
-    {
-        //StartCoroutine(LaunchCooldown(1));
-    }
-
     void Update()
     {
         currentDirection = GetCurrentDirection();
@@ -20,7 +15,6 @@ public class ScaredBall : Ball, IHitboxReceiver
             canAbility = true;
         }
     }
-
 
     public void OnHitboxEnter(Collider collider)
     {

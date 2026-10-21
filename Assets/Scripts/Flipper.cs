@@ -4,6 +4,7 @@ using UnityEngine;
 public class Flipper : Point, IHitboxReceiver
 {
     [SerializeField] private float flipSpeed;
+
     private HingeJoint hinge;
 
     void Start()

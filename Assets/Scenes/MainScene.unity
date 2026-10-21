@@ -283,6 +283,7 @@ MonoBehaviour:
   currentDirection: {x: 0, y: 0, z: 0}
   launchDirection: {x: 0, y: 0, z: 0}
   power: 0
+  isEliminated: 0
   blastRadius: 5
   blastPower: 20
 --- !u!1001 &268587892
@@ -2338,6 +2339,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2031818076}
   - component: {fileID: 2031818077}
+  - component: {fileID: 2031818079}
   - component: {fileID: 2031818078}
   m_Layer: 0
   m_Name: Hitbox
@@ -2394,6 +2396,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2043c94a4a2b60a49b7f35d8f1dc34cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hitbox
+--- !u!54 &2031818079
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2031818075}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &2133091284
 GameObject:
   m_ObjectHideFlags: 0
@@ -2557,6 +2586,7 @@ MonoBehaviour:
   currentDirection: {x: 0, y: 0, z: 0}
   launchDirection: {x: 0, y: 0, z: 0}
   power: 0
+  isEliminated: 0
   clickAction: {fileID: -8612317302169038603, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   canvasRect: {fileID: 1605538151}
   uiCamera: {fileID: 747943202}

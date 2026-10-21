@@ -145,6 +145,7 @@ public class PlayerBall : Ball
     {
         UIManager.Instance.currentTimeScale = aimTimeScale;
         Time.timeScale = UIManager.Instance.currentTimeScale;
+        Time.fixedDeltaTime = 0.02f * Time.timeScale;
     }
 
     void SpeedUp()
@@ -154,6 +155,7 @@ public class PlayerBall : Ball
         if (!UIManager.Instance.isPaused)
         {
             Time.timeScale = UIManager.Instance.currentTimeScale;
+            Time.fixedDeltaTime = 0.02f;
         }
     }
 

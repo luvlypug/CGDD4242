@@ -6,9 +6,9 @@ public class SwarmMiniBall : MonoBehaviour
     public float lifetime = 6f;
     public float measureDelay = 0.25f;
 
-    private SwarmAgent owner;
+    private SwarmBall owner;
 
-    public void Init(SwarmAgent agent)
+    public void Init(SwarmBall agent)
     {
         owner = agent;
         Destroy(gameObject, lifetime);

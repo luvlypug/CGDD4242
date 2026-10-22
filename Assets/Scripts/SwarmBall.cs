@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SwarmAgent : Ball
+public class SwarmBall : Ball
 {
     public int rayCount = 24;
     public float scanDist = 20f;

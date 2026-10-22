@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3744971453423731189}
   - component: {fileID: 7293933746458944547}
   m_Layer: 0
-  m_Name: SwarmAgent
+  m_Name: SwarmBall
   m_TagString: Ball
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

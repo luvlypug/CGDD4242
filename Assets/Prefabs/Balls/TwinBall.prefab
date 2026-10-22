@@ -139,7 +139,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 4
   m_CollisionDetection: 0
 --- !u!114 &9092735325159856171
 MonoBehaviour:
@@ -163,6 +163,7 @@ MonoBehaviour:
   currentDirection: {x: 0, y: 0, z: 0}
   launchDirection: {x: 0, y: 0, z: 0}
   power: 0
+  isEliminated: 0
   detectionRadius: 15
   launchPower: 10
   thinkInterval: 1
@@ -171,4 +172,3 @@ MonoBehaviour:
   cloneforce: 1
   abilityRange: 5
   coolDown: 10
-  isClone: 1

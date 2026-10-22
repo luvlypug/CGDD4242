@@ -133,7 +133,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8289953721511619204, guid: 182f0d06b5354f0428a7ad11dfd3869a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8289953721511619204, guid: 182f0d06b5354f0428a7ad11dfd3869a, type: 3}
       propertyPath: m_LocalPosition.z
@@ -893,7 +893,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8580776606660245506, guid: 40fb869dd6f8e5242b0a741c1c9fab0b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8580776606660245506, guid: 40fb869dd6f8e5242b0a741c1c9fab0b, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1571,7 +1571,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3371021774563954271, guid: c724cdee7f7dcfa4abfb7a14ed34d59a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3371021774563954271, guid: c724cdee7f7dcfa4abfb7a14ed34d59a, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2186,7 +2186,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 4
   m_CollisionDetection: 0
 --- !u!135 &2133091287
 SphereCollider:

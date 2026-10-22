@@ -13,11 +13,10 @@ GameObject:
   - component: {fileID: 420117858227478595}
   - component: {fileID: 1312445141570181183}
   - component: {fileID: 3744971453423731189}
-  - component: {fileID: 5778825851479626471}
   - component: {fileID: 7293933746458944547}
   m_Layer: 0
   m_Name: SwarmAgent
-  m_TagString: Untagged
+  m_TagString: Ball
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -142,21 +141,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &5778825851479626471
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9216767082803303603}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a912f5ab87c29347a7bdca237112175, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Ball
-  clickAction: {fileID: -8612317302169038603, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  speed: 1
-  aimTimeScale: 0.1
 --- !u!114 &7293933746458944547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -169,10 +153,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 964f25f803ea0ae4b8c682adb82bd951, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SwarmAgent
+  speed: 1.2
+  minPower: 5
+  maxPower: 10
+  rb: {fileID: 0}
+  canLaunch: 1
+  canAbility: 0
+  points: 0
+  currentDirection: {x: 0, y: 0, z: 0}
+  launchDirection: {x: 0, y: 0, z: 0}
+  power: 0
+  isEliminated: 0
   rayCount: 24
   scanDist: 20
   launchPower: 5
-  cooldownPerPower: 0.25
   riskTolerance: 0.5
   pointReward: 10
   ballReward: 10
@@ -189,10 +183,9 @@ MonoBehaviour:
   thresholdDecayPerSecond: 0.03
   minThreshold: 0.2
   swarmRange: 5
-  abilityCost: 50
+  debugOpportunity: 0
   miniBallPrefab: {fileID: 7955654951527896647, guid: 274fb30a887fb3b4a957e53f635a7312, type: 3}
   miniBallCount: 12
   miniBallBurstSpeed: 8
-  Points: 0
   TotalMiniBallHits: 0
   TotalSlowdown: 0

@@ -21,43 +21,33 @@ public class SwarmMiniBall : MonoBehaviour
             return;
         }
 
-        if (!collision.gameObject.CompareTag("Ball"))
+        Ball opponent = collision.gameObject.GetComponentInParent<Ball>();
+
+        if (opponent == null || opponent == owner || opponent.rb == null)
         {
             return;
         }
 
-        if (collision.gameObject == owner.gameObject)
-        {
-            return;
-        }
-
-        Rigidbody opp = collision.rigidbody;
-
-        if (opp == null)
-        {
-            return;
-        }
-
-        SpeedTracker tracker = opp.GetComponent<SpeedTracker>();
+        SpeedTracker tracker = opponent.GetComponent<SpeedTracker>();
 
         if (tracker == null)
         {
-            tracker = opp.gameObject.AddComponent<SpeedTracker>();
+            tracker = opponent.gameObject.AddComponent<SpeedTracker>();
         }
 
-        StartCoroutine(MeasureSlowdown(opp, tracker.PreviousSpeed));
+        StartCoroutine(MeasureSlowdown(opponent, tracker.PreviousSpeed));
     }
 
-    IEnumerator MeasureSlowdown(Rigidbody opp, float speedBefore)
+    IEnumerator MeasureSlowdown(Ball opponent, float speedBefore)
     {
         yield return new WaitForSeconds(measureDelay);
 
-        if (opp == null || owner == null)
+        if (opponent == null || owner == null)
         {
             yield break;
         }
 
-        float after = opp.linearVelocity.magnitude;
+        float after = opponent.rb.linearVelocity.magnitude;
         owner.ReportHit(Mathf.Max(0f, speedBefore - after));
     }
 }

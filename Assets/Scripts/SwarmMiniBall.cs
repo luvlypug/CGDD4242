@@ -21,14 +21,9 @@ public class SwarmMiniBall : MonoBehaviour
             return;
         }
 
-        Ball opponent = collision.gameObject.GetComponent<Ball>();
+        Ball opponent = collision.gameObject.GetComponentInParent<Ball>();
 
-        if (opponent == null || opponent == owner)
-        {
-            return;
-        }
-
-        if (opponent.rb == null)
+        if (opponent == null || opponent == owner || opponent.rb == null)
         {
             return;
         }

@@ -153,11 +153,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 964f25f803ea0ae4b8c682adb82bd951, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SwarmAgent
-  speed: 2
-  rb: {fileID: 0}
-  minPower: 1
+  speed: 1.2
+  minPower: 5
   maxPower: 10
+  rb: {fileID: 0}
   canLaunch: 1
+  canAbility: 0
+  points: 0
+  currentDirection: {x: 0, y: 0, z: 0}
+  launchDirection: {x: 0, y: 0, z: 0}
+  power: 0
+  isEliminated: 0
   rayCount: 24
   scanDist: 20
   launchPower: 5
@@ -178,10 +184,8 @@ MonoBehaviour:
   minThreshold: 0.2
   swarmRange: 5
   debugOpportunity: 0
-  abilityCost: 50
   miniBallPrefab: {fileID: 7955654951527896647, guid: 274fb30a887fb3b4a957e53f635a7312, type: 3}
   miniBallCount: 12
   miniBallBurstSpeed: 8
-  Points: 25
   TotalMiniBallHits: 0
   TotalSlowdown: 0

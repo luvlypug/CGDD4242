@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 //Midia zone
-public class Twinball : Ball
+public class TwinBall : Ball
 {
     [Header("Detection")]
     [SerializeField] private float detectionRadius = 15f;
@@ -77,7 +77,7 @@ public class Twinball : Ball
             // Priority 1: Attack Balls
             if (hit.CompareTag("Ball"))
             {
-                Twinball otherTwin = hit.GetComponent<Twinball>();
+                TwinBall otherTwin = hit.GetComponent<TwinBall>();
 
                 // Ignore parent/clone
                 if (otherTwin != null && otherTwin.familyID == familyID)
@@ -154,7 +154,7 @@ public class Twinball : Ball
         GameObject cloneObj =
             Instantiate(twinballPrefab, transform.position, transform.rotation);
 
-        Twinball clone = cloneObj.GetComponent<Twinball>();
+        TwinBall clone = cloneObj.GetComponent<TwinBall>();
 
         if (clone != null)
         {

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2419577983889479015}
   - component: {fileID: 9092735325159856171}
   m_Layer: 0
-  m_Name: Twinball
+  m_Name: TwinBall
   m_TagString: Ball
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

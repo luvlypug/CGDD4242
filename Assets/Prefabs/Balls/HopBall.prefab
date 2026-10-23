@@ -139,7 +139,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 4
+  m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!114 &-2950799240579950840
 MonoBehaviour:
@@ -153,14 +153,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3803fd3ec498f874d831753f1405ac8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HopBall
+  speed: 1
+  minPower: 1
+  maxPower: 15
+  rb: {fileID: 0}
+  canLaunch: 1
+  canAbility: 0
+  points: 20
+  currentDirection: {x: 0, y: 0, z: 0}
+  launchDirection: {x: 0, y: 0, z: 0}
+  power: 0
+  isEliminated: 0
   rayCount: 24
-  launchPower: 10
-  launchCooldown: 3
-  scanDist: 20
-  riskTolerance: 0.1
+  scanDistance: 20
+  launchInterval: 3
   threatRadius: 10
   collisionPrediction: 1
-  threatTimer: 0
-  threatCheckCooldown: 0.1
-  abilityCost: 10
-  points: 20
+  hopForce: 2
+  hopCost: 10

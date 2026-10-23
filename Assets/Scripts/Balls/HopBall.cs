@@ -1,217 +1,170 @@
 using UnityEngine;
-using System.Collections.Generic;
 
 // rin code hi 
+// redid and organized some stuff to make less messy and inherit from ball :D
 
-public class HopBall : MonoBehaviour
-{
-    private Rigidbody rb;
-    // private Ball ball;
+public class HopBall : Ball 
+{ 
+    // movement stuff 
+    [SerializeField] private int rayCount = 24; 
+    [SerializeField] private float scanDistance = 20f; 
+    [SerializeField] private float launchInterval = 3f; 
 
-    // launch directions 
-    public int rayCount = 24;
+    // detect the threats
+    [SerializeField] private float threatRadius = 10f; 
+    [SerializeField] private float collisionPrediction = 1f; 
 
-    // launch info
-    public float launchPower = 10f;
+    // abilitiy
+    // (might have to update this later,
+    // but for testing puroses I kept my previous ability code p much the same)
+    [SerializeField] private float hopForce = 2f; 
+    [SerializeField] private int hopCost = 10; 
+    
+    private float launchTimer; 
     private Vector3 bestDirection; 
-
-    // timer for launchinf
-    private float launchTimer;
-    public float launchCooldown = 3f; 
-
-    // how far sensors can look
-    public float scanDist = 20f; 
-
-    // decision variables
-    public float riskTolerance = 0.1f; 
-    public float threatRadius = 10f;
-    public float collisionPrediction = 1f;
-    public float threatTimer;
-    public float threatCheckCooldown = 0.1f;
-
-    // ability / skill 
-    public int abilityCost = 10; 
-    public int points = 20; // starting with some points for testing purposes :3 
-
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        rb = GetComponent<Rigidbody>();
-        // ball = GetComponent<Ball>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        threatTimer += Time.deltaTime;
-        launchTimer += Time.deltaTime;
-
-        // dont want threats to be called each frame probably maybe
-        if (threatTimer >= threatCheckCooldown)
-        {
-            threatTimer = 0f;
-            CheckIncomming(); 
-        }
-
-        // launch based on timer yayyy
-        if (launchTimer > launchCooldown)
-        {
-            launchTimer = 0f;
-
-            ChooseBestDirection();
-            Launch();
-        }
-    }
-
-    void CheckIncomming()
-    {
-        GameObject[] balls = GameObject.FindGameObjectsWithTag("Ball");
-
-        foreach (GameObject ball in balls)
+    private Vector3 threatPosition; 
+    
+    
+    void Start() 
+    { 
+        points = 20; // set points for now (testing)
+    } 
+    
+    void Update() 
+    { 
+        // should use launch from ball script but still uses the original checkforthreats() method
+        currentDirection = GetCurrentDirection(); 
+        launchTimer += Time.deltaTime; 
+        CheckForThreats(); 
+        
+        if (launchTimer >= launchInterval && canLaunch) 
         { 
-            // we dont care about ourselves so skip #yes
-            if (ball ==  gameObject)
-            {
-                continue; // skip rest and move on 
-            }
+            launchTimer = 0f; ChooseBestDirection(); 
+            power = maxPower; 
+            Launch(bestDirection, power); 
+        } 
 
-            Rigidbody enemyRb = ball.GetComponent<Rigidbody>();
-
-            if (enemyRb == null)
-            {
-                continue; // skip rest and move on 
-            }
-
-            float distance = Vector3.Distance(transform.position, ball.transform.position);
-
-            // also if its not a threat then ignore too dghiufdhujrfoujihfffffhhhhhhhhhhh
-            if (distance >  threatRadius)
-            {
-                continue; // skip rest and move on 
-            }
-
-            Vector3 directionToSelf = (transform.position - ball.transform.position).normalized;
-
-            // is ball coming towards us?? 1 = directly ggulpp, 0 = yes but sidewways i think, -1 = no!!!!!!!! i thinl
-            float alignment = Vector3.Dot(enemyRb.linearVelocity.normalized, directionToSelf);
-
-            if (alignment > 0.8f)
-            {
-                float speed = enemyRb.linearVelocity.magnitude; 
-
-                if (speed <= 0) {
-                    continue; // skip rest and move on 
-                }
-
-                float timeToImpact = distance / speed; 
-
-                if (timeToImpact < collisionPrediction) { 
-                    useHop(ball.transform.position);
-                    return; 
-                } 
-            }
-
-
-        }
-    }
-
-    void ChooseBestDirection()
+        if (points >= hopCost) 
+        { 
+            canAbility = true; 
+        } 
+    } 
+    
+    void CheckForThreats() 
     {
+        // updated method for organization 
+        // find things tagged ball so we can avoid them 
+        GameObject[] balls = GameObject.FindGameObjectsWithTag("Ball"); 
+
+        foreach (GameObject ball in balls) 
+        { 
+            // ignore self #yurp
+            if (ball == gameObject) 
+                continue; 
+
+            // grab the enemies rb then start calculating threat 
+            Rigidbody enemyRB = ball.GetComponent<Rigidbody>(); 
+
+            if (enemyRB == null) 
+                continue; 
+
+            float distance = Vector3.Distance(transform.position, ball.transform.position); 
+
+            if (distance > threatRadius) 
+                continue; 
+
+            Vector3 directionToSelf = (transform.position - ball.transform.position).normalized; 
+            float alignment = Vector3.Dot(enemyRB.linearVelocity.normalized, directionToSelf); 
+            
+            if (alignment < 0.8f) 
+                continue; 
+            
+            float speed = enemyRB.linearVelocity.magnitude; 
+            
+            if (speed <= 0f) 
+                continue; 
+            
+            float timeToImpact = distance / speed; 
+            
+            // logic for when to use ability
+            // may update logic since this is the only time it uses the ability
+            if (timeToImpact <= collisionPrediction) 
+            { 
+                threatPosition = ball.transform.position; 
+                
+                if (canAbility) 
+                { 
+                    Ability(); 
+                } 
+
+                return; 
+            } 
+        } 
+    } 
+    
+    void ChooseBestDirection() 
+    { 
         float bestUtility = float.MinValue;
 
-        // specified rayCount (24 rn to start) and 15 degree angles ..
-        // though i maybe shouldve made the angles a varibale now uuhh oh well 
-        for (int i = 0; i < rayCount; i++)
-        {
-            float angle = i * 15f;
-            Vector3 direction = Quaternion.Euler(0, angle, 0) * Vector3.forward;
+        // find things tagged ball so we can avoid them 
+        GameObject[] balls = GameObject.FindGameObjectsWithTag("Ball");
 
-            // draw every ray cuz this ball is stupid and i cant tell what its doing ever bruh 
-            Debug.DrawRay(
-                transform.position,
-                direction * scanDist,
-                Color.red,
-                3f
-            );
+        for (int i = 0; i < rayCount; i++) 
+        { 
+            float angle = i * (360f/ rayCount); 
 
-            float reward = 0f;
-            float risk = 0f;
+            Vector3 direction = Quaternion.Euler(0, angle, 0) * Vector3.forward; 
 
-            RaycastHit[] hits = Physics.RaycastAll(transform.position, direction, scanDist);
+            float reward = 0f; 
+            float risk = 0f; 
 
-            foreach (RaycastHit hit in hits){
+            RaycastHit[] hits = Physics.RaycastAll(transform.position, direction, scanDistance); 
 
-                // point objects = good 
-                if (hit.collider.CompareTag("Point"))
-                {
-                    Debug.Log("FOUND POINT");
-
-                    reward +=15f / Mathf.Max(hit.distance, 1f);
-                }
+            foreach (RaycastHit hit in hits) 
+            { 
+                // points = good
+                if (hit.collider.CompareTag("Point")) 
+                { 
+                    reward += 15f / Mathf.Max(hit.distance, 1f); 
+                } 
                 
-                // balls = risky 
-                if (hit.collider.CompareTag("Ball") && hit.collider.gameObject != gameObject)
-                {
-                    risk +=20f / Mathf.Max(hit.distance, 1f);
-                }
-                
-                // ++ risk for danger 
+                // danger = bad 
                 if (hit.collider.CompareTag("Danger"))
-                {
-                    Debug.Log("FOUND DANGER");
-
-                    risk +=20f / Mathf.Max(hit.distance, 1f);
+                { 
+                    risk += 20f / Mathf.Max(hit.distance, 1f); 
                 }
-            }
 
-            Debug.Log($"Angle {angle}: Reward={reward:F2} Risk={risk:F2}");
+                // enemies also = bad 
+                if (hit.collider.CompareTag("Ball"))
+                {
+                    risk += 30f / Mathf.Max(hit.distance, 1f);
+                }
+            } 
 
-            float utility =reward - (risk * (1f - riskTolerance));
+            float utility = reward - risk; 
 
-            if (utility > bestUtility)
+            if (utility > bestUtility) 
             {
-                bestUtility = utility;
-                bestDirection = direction;
-            }
+                bestUtility = utility; 
+                bestDirection = direction; 
+            } 
         }
 
-        Debug.DrawRay(
-            transform.position,
-            bestDirection * scanDist,
-            Color.green,
-            3f
-        );
-    }
+        // can take this out later (testing)
+        Debug.DrawRay(transform.position, bestDirection * scanDistance, Color.green, 2f); 
+    } 
+    public override void Ability() 
+    { 
+        // if we cant use the ability yet return 
+        if (!canAbility) 
+            return;
 
-    void Launch()
-    {
-        //Debug.Log($"Launching with direction {bestDirection}");
+        points -= hopCost;
 
-        rb.linearVelocity = bestDirection * launchPower;
+        rb.linearVelocity = Vector3.up * hopForce;
 
-        //Debug.Log($"New Velocity {rb.linearVelocity}"); 
-    }
+        canAbility = points >= hopCost;
 
-    void useHop(Vector3 threatPosition)
-    {
-        if (points < abilityCost)
-        {
-            Debug.Log("Hop ball did not have enough points to use hop");
-            return; 
-        }
-
-        points -= abilityCost;
-
-        // make sure direction is away from the treat 
-        Vector3 awayDirect = (transform.position - threatPosition).normalized;
-
-        // hop 
-        Vector3 hopDirect = awayDirect + Vector3.up;
-        rb.AddForce(Vector3.up * 3f, ForceMode.Impulse);
-
-        Debug.Log("Hop ball used hop!!");
-    }
-
-
+        Debug.Log("Hop ball used hop"); 
+    } 
 }

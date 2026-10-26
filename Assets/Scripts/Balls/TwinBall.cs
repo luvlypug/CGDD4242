@@ -40,9 +40,6 @@ public class TwinBall : Ball
         }
 
         InvokeRepeating(nameof(UpdateMovement), 0f, thinkInterval);
-
-        //temp just testing
-        canAbility = true;
     }
 
     private void Update()
@@ -163,7 +160,7 @@ public class TwinBall : Ball
 
         Vector3 desiredDirection = currentDirection;
 
-        //ighest priority: enemy balls
+        //Highest priority: enemy balls
         if (closestEnemy != null)
         {
             desiredDirection =
@@ -174,7 +171,11 @@ public class TwinBall : Ball
             {
                 if (!isClone)
                 {
-                    Ability();
+                    // Can use ability check
+                    if (canAbility)
+                    {
+                        Ability();
+                    }
                 }
             }
         }
@@ -202,39 +203,43 @@ public class TwinBall : Ball
 
     public override void Ability()
     {
-        Debug.Log(canAbility);
-
-        if (isClone || twinballPrefab == null || !canAbility)
-            return;
-
-        GameObject cloneObj =
-            Instantiate(twinballPrefab, transform.position, transform.rotation);
-
-        TwinBall clone = cloneObj.GetComponent<TwinBall>();
-
-        if (clone != null)
+        if (canAbility && !UIManager.Instance.isPaused)
         {
-            clone.InitializeClone(familyID);
-            StartCoroutine(abilityCooldown(coolDown));
+            if (isClone || twinballPrefab == null)
+                return;
 
-            clone.isClone = true;
-            clone.canAbility = false;
+            GameObject cloneObj =
+                Instantiate(twinballPrefab, transform.position, transform.rotation);
 
-            // Perpendicular direction
-            Vector3 perpendicular =
-                Vector3.Cross(currentDirection, Vector3.up);
+            TwinBall clone = cloneObj.GetComponent<TwinBall>();
 
-            // Fallback if moving vertically
-            if (perpendicular.sqrMagnitude < 0.01f)
+            if (clone != null)
             {
-                perpendicular =
-                    Vector3.Cross(currentDirection, Vector3.right);
+                clone.InitializeClone(familyID);
+                StartCoroutine(abilityCooldown(coolDown));
+
+                clone.isClone = true;
+                clone.canAbility = false;
+
+                // Perpendicular direction
+                Vector3 perpendicular =
+                    Vector3.Cross(currentDirection, Vector3.up);
+
+                // Fallback if moving vertically
+                if (perpendicular.sqrMagnitude < 0.01f)
+                {
+                    perpendicular =
+                        Vector3.Cross(currentDirection, Vector3.right);
+                }
+
+                perpendicular.Normalize();
+
+                clone.currentDirection = perpendicular;
+                clone.Launch(perpendicular, cloneforce);
             }
 
-            perpendicular.Normalize();
-
-            clone.currentDirection = perpendicular;
-            clone.Launch(perpendicular, cloneforce);
+            points = 0;
+            canAbility = false;
         }
     }
 

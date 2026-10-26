@@ -18,17 +18,10 @@ public class HopBall : Ball
     // (might have to update this later,
     // but for testing puroses I kept my previous ability code p much the same)
     [SerializeField] private float hopForce = 2f; 
-    [SerializeField] private int hopCost = 10; 
     
     private float launchTimer; 
     private Vector3 bestDirection; 
     private Vector3 threatPosition; 
-    
-    
-    void Start() 
-    { 
-        points = 20; // set points for now (testing)
-    } 
     
     void Update() 
     {
@@ -50,12 +43,7 @@ public class HopBall : Ball
             launchTimer = 0f; ChooseBestDirection(); 
             power = maxPower; 
             Launch(bestDirection, power); 
-        } 
-
-        if (points >= hopCost) 
-        { 
-            canAbility = true; 
-        } 
+        }
     } 
     
     void CheckForThreats() 
@@ -157,22 +145,18 @@ public class HopBall : Ball
                 bestDirection = direction; 
             } 
         }
-
-        // can take this out later (testing)
-        Debug.DrawRay(transform.position, bestDirection * scanDistance, Color.green, 2f); 
     } 
+
     public override void Ability() 
-    { 
-        // if we cant use the ability yet return 
-        if (!canAbility) 
-            return;
+    {
+        if (canAbility && !UIManager.Instance.isPaused)
+        {
+            rb.linearVelocity = Vector3.up * hopForce;
 
-        points -= hopCost;
+            Debug.Log("Hop ball used hop");
 
-        rb.linearVelocity = Vector3.up * hopForce;
-
-        canAbility = points >= hopCost;
-
-        Debug.Log("Hop ball used hop"); 
+            points = 0;
+            canAbility = false;
+        }
     } 
 }

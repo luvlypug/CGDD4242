@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 // jonah code hi (built off of rins code thank you credits to rin)
@@ -62,7 +63,7 @@ public class SpeedBall : Ball
             launchTimer = 0f;
 
             ChooseBestDirection();
-            Launch();
+            SpeedLaunch();
         }
     }
 
@@ -102,8 +103,11 @@ public class SpeedBall : Ball
 
                 float timeToImpact = distance / speed; 
 
-                if (timeToImpact < collisionPrediction) { 
-                    Ability();
+                if (timeToImpact < collisionPrediction) {
+                    if (canAbility)
+                    {
+                        Ability();
+                    }
                     return; 
                 } 
             }
@@ -151,7 +155,7 @@ public class SpeedBall : Ball
         }
     }
 
-    void Launch()
+    void SpeedLaunch()
     {
         Debug.Log(launchPower);
 
@@ -171,9 +175,13 @@ public class SpeedBall : Ball
 
     public override void Ability()
     {
-        launchPower += 10f;
-        Debug.Log("speed ball is speeding up!");
+        if (canAbility && !UIManager.Instance.isPaused)
+        {
+            launchPower += 10f;
+            Debug.Log("speed ball is speeding up!");
+
+            points = 0;
+            canAbility = false;
+        }
     }
-
-
 }

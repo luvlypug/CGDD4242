@@ -169,7 +169,7 @@ MonoBehaviour:
   thinkInterval: 1
   waypoints: []
   waypointReachDistance: 2
-  twinballPrefab: {fileID: 0}
+  twinballPrefab: {fileID: 3668818196528312746}
   cloneLifetime: 8
   cloneforce: 1
   abilityRange: 5

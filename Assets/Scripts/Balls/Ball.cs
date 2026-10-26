@@ -43,6 +43,14 @@ public abstract class Ball : MonoBehaviour
         {
             isEliminated = true;
             gameObject.SetActive(false);
+
+            if(this.gameObject.name == "Player Ball")
+            {
+                UIManager.Instance.loseScreen.SetActive(true);
+                UIManager.Instance.Pause();
+            }
+
+            GameplayManager.Instance.numEliminated++;
         }
     }
 

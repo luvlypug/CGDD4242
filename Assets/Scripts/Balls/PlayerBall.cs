@@ -56,6 +56,13 @@ public class PlayerBall : Ball
             powerBarRect.localRotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(launchDirection.z, launchDirection.x) * Mathf.Rad2Deg + 180);
             powerBarTailRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, (power - 1) / (maxPower - minPower) * 240 + 96);
         }
+
+        if (GameplayManager.Instance.numEliminated >= 5)
+        {
+            UIManager.Instance.winScreen.SetActive(true);
+            UIManager.Instance.Pause();
+
+        }
     }
 
     void OnEnable()

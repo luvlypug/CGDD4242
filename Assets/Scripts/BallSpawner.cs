@@ -17,6 +17,7 @@ public class BallSpawner : MonoBehaviour
     public IEnumerator SpawnBall(int randomIndex)
     {
         balls[randomIndex].SetActive(true);
+        balls[randomIndex].transform.position = new Vector3(Random.Range(-8.0f, 8.0f), transform.position.y, transform.position.z);
         balls.RemoveAt(randomIndex);
 
         if (balls.Count > 0)

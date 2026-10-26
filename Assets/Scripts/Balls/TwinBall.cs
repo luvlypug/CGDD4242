@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 
 // Midia zone
 public class TwinBall : Ball
@@ -59,12 +58,15 @@ public class TwinBall : Ball
 
     private void UpdateMovement()
     {
-        Vector3 moveDirection = CalculateSteering();
-
-        if (moveDirection.sqrMagnitude > 0.01f)
+        if (this.gameObject.activeSelf)
         {
-            currentDirection = moveDirection.normalized;
-            Launch(currentDirection, launchPower);
+            Vector3 moveDirection = CalculateSteering();
+
+            if (moveDirection.sqrMagnitude > 0.01f)
+            {
+                currentDirection = moveDirection.normalized;
+                Launch(currentDirection, launchPower);
+            }
         }
     }
     //NOTE: allwaypoint stuff should not cause errors if there is no waypoints

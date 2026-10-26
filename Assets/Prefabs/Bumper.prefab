@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8489118351010784182}
   m_Layer: 0
   m_Name: Bumper
-  m_TagString: Untagged
+  m_TagString: Point
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -128,4 +128,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Bumper
   amount: 10
-  blastPower: 20
+  blastPower: 150

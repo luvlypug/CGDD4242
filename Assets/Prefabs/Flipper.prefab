@@ -196,7 +196,7 @@ HingeJoint:
     targetPosition: 0
   m_UseMotor: 1
   m_Motor:
-    targetVelocity: -1500
+    targetVelocity: -5000
     force: 10000
     freeSpin: 0
   m_UseLimits: 1
@@ -212,8 +212,8 @@ HingeJoint:
   m_BreakTorque: Infinity
   m_EnableCollision: 0
   m_EnablePreprocessing: 1
-  m_MassScale: 1
-  m_ConnectedMassScale: 1
+  m_MassScale: 3
+  m_ConnectedMassScale: 3
 --- !u!114 &4618633053154382590
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -226,8 +226,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dedfee5ebcc3134497fab22e1a3572d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Flipper
-  amount: 50
-  flipSpeed: -1500
+  amount: 20
+  flipSpeed: -5000
 --- !u!1 &2829036228215965391
 GameObject:
   m_ObjectHideFlags: 0
@@ -255,8 +255,8 @@ Transform:
   m_GameObject: {fileID: 2829036228215965391}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0.15, y: 0, z: 1}
+  m_LocalScale: {x: 0.7, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4356001639689760644}

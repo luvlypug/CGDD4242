@@ -61,7 +61,7 @@ public abstract class Ball : MonoBehaviour
 
         if (useCooldown)
         {
-            StartCoroutine(LaunchCooldown(power / (maxPower - minPower) * 1.5f + 0.5f));
+            StartCoroutine(LaunchCooldown(power / (maxPower - minPower) + 0.1f));
         }
     }
 

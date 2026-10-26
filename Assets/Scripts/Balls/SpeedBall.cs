@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections.Generic;
 
 // jonah code hi (built off of rins code thank you credits to rin)
 

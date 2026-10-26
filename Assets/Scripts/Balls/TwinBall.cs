@@ -1,8 +1,9 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
-//Midia zone
+// Midia zone
 public class TwinBall : Ball
 {
     [Header("Detection")]
@@ -43,6 +44,17 @@ public class TwinBall : Ball
 
         //temp just testing
         canAbility = true;
+    }
+
+    private void Update()
+    {
+        currentDirection = GetCurrentDirection();
+
+        if (points >= maxPoints)
+        {
+            points = maxPoints;
+            canAbility = true;
+        }
     }
 
     private void UpdateMovement()

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Austin's agent
 public class SwarmBall : Ball
 {
     public int rayCount = 24;
@@ -40,6 +41,14 @@ public class SwarmBall : Ball
 
     void Update()
     {
+        currentDirection = GetCurrentDirection();
+
+        if (points >= maxPoints)
+        {
+            points = maxPoints;
+            canAbility = true;
+        }
+
         if (isEliminated)
         {
             return;

@@ -1,5 +1,6 @@
 using UnityEngine;
 
+// Carter's scared lil pinball
 public class ScaredBall : Ball, IHitboxReceiver
 {
     [SerializeField] private float blastRadius;

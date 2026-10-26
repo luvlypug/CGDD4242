@@ -31,7 +31,15 @@ public class HopBall : Ball
     } 
     
     void Update() 
-    { 
+    {
+        currentDirection = GetCurrentDirection();
+
+        if (points >= maxPoints)
+        {
+            points = maxPoints;
+            canAbility = true;
+        }
+
         // should use launch from ball script but still uses the original checkforthreats() method
         currentDirection = GetCurrentDirection(); 
         launchTimer += Time.deltaTime; 

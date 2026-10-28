@@ -123,7 +123,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 289702175477568393}
   serializedVersion: 5
-  m_Mass: 1
+  m_Mass: 9
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -154,6 +154,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 830a20d89dd3f4260ac61707d9d0b331, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpeedBall
+  speed: 0
+  minPower: 0
+  maxPower: 0
+  rb: {fileID: 0}
+  canLaunch: 1
+  canAbility: 0
+  points: 0
+  currentDirection: {x: 0, y: 0, z: 0}
+  launchDirection: {x: 0, y: 0, z: 0}
+  power: 0
+  isEliminated: 0
   rayCount: 24
   launchPower: 15
   launchCooldown: 3

@@ -43,6 +43,14 @@ public abstract class Ball : MonoBehaviour
         {
             isEliminated = true;
             gameObject.SetActive(false);
+
+            if(this.gameObject.name == "Player Ball")
+            {
+                UIManager.Instance.loseScreen.SetActive(true);
+                UIManager.Instance.Pause();
+            }
+
+            GameplayManager.Instance.numEliminated++;
         }
     }
 
@@ -61,7 +69,7 @@ public abstract class Ball : MonoBehaviour
 
         if (useCooldown)
         {
-            StartCoroutine(LaunchCooldown(power / (maxPower - minPower) * 1.5f + 0.5f));
+            StartCoroutine(LaunchCooldown(power / (maxPower - minPower) + 0.1f));
         }
     }
 

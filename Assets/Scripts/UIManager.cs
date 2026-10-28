@@ -1,8 +1,14 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get; private set; }
+
+    [SerializeField] private GameObject pauseScreen;
+
+    public GameObject winScreen;
+    public GameObject loseScreen;
 
     [HideInInspector] public bool isPaused = false;
     [HideInInspector] public float currentTimeScale = 1;
@@ -22,23 +28,30 @@ public class UIManager : MonoBehaviour
     {
         if (!isPaused)
         {
+            pauseScreen.SetActive(true);
             Pause();
         }
         else
         {
+            pauseScreen.SetActive(false);
             Unpause();
         }
     }
 
-    void Pause()
+    public void Pause()
     {
         isPaused = true;
         Time.timeScale = 0;
     }
 
-    void Unpause()
+    public void Unpause()
     {
         isPaused = false;
         Time.timeScale = currentTimeScale;
+    }
+
+    public void ReplayButton()
+    {
+        SceneManager.LoadScene(1);
     }
 }

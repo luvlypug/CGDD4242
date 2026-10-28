@@ -1,9 +1,9 @@
+using Unity.VisualScripting;
 using UnityEngine;
-using System.Collections.Generic;
 
 // jonah code hi (built off of rins code thank you credits to rin)
 
-public class SpeedBall : MonoBehaviour
+public class SpeedBall : Ball
 {
     private Rigidbody rb;
     // private Ball ball;
@@ -39,6 +39,14 @@ public class SpeedBall : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        currentDirection = GetCurrentDirection();
+
+        if (points >= maxPoints)
+        {
+            points = maxPoints;
+            canAbility = true;
+        }
+
         threatTimer += Time.deltaTime;
         launchTimer += Time.deltaTime;
 
@@ -55,7 +63,7 @@ public class SpeedBall : MonoBehaviour
             launchTimer = 0f;
 
             ChooseBestDirection();
-            Launch();
+            SpeedLaunch();
         }
     }
 
@@ -95,8 +103,11 @@ public class SpeedBall : MonoBehaviour
 
                 float timeToImpact = distance / speed; 
 
-                if (timeToImpact < collisionPrediction) { 
-                    useSpeed();
+                if (timeToImpact < collisionPrediction) {
+                    if (canAbility)
+                    {
+                        Ability();
+                    }
                     return; 
                 } 
             }
@@ -144,7 +155,7 @@ public class SpeedBall : MonoBehaviour
         }
     }
 
-    void Launch()
+    void SpeedLaunch()
     {
         Debug.Log(launchPower);
 
@@ -162,11 +173,15 @@ public class SpeedBall : MonoBehaviour
 
     }
 
-    void useSpeed()
+    public override void Ability()
     {
-        launchPower += 10f;
-        Debug.Log("speed ball is speeding up!");
+        if (canAbility && !UIManager.Instance.isPaused)
+        {
+            launchPower += 10f;
+            Debug.Log("speed ball is speeding up!");
+
+            points = 0;
+            canAbility = false;
+        }
     }
-
-
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
+// Also Austin's
 public class SwarmMiniBall : MonoBehaviour
 {
     public float lifetime = 6f;

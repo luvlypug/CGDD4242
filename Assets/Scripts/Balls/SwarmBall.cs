@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Austin's agent
 public class SwarmBall : Ball
 {
     public int rayCount = 24;
@@ -40,12 +41,18 @@ public class SwarmBall : Ball
 
     void Update()
     {
+        currentDirection = GetCurrentDirection();
+
+        if (points >= maxPoints)
+        {
+            points = maxPoints;
+            canAbility = true;
+        }
+
         if (isEliminated)
         {
             return;
         }
-
-        canAbility = points >= maxPoints;
 
         if (canAbility && abilityReadySince < 0f)
         {
@@ -124,7 +131,10 @@ public class SwarmBall : Ball
 
         if (bestUtility >= threshold && bestDistance <= swarmRange)
         {
-            Ability();
+            if (canAbility)
+            {
+                Ability();
+            }
         }
     }
 
@@ -237,38 +247,41 @@ public class SwarmBall : Ball
 
     public override void Ability()
     {
-        points = Mathf.Max(0, points - maxPoints);
-        canAbility = false;
-        abilityReadySince = -1f;
-
-        if (miniBallPrefab == null)
+        if (canAbility && !UIManager.Instance.isPaused)
         {
-            return;
-        }
-
-        for (int i = 0; i < miniBallCount; i++)
-        {
-            float angle = (360f / miniBallCount) * i * Mathf.Deg2Rad;
-            Vector3 direction = new Vector3(Mathf.Cos(angle), 0f, Mathf.Sin(angle));
-
-            GameObject mini = Instantiate(miniBallPrefab, transform.position + direction * 0.6f, Quaternion.identity);
-
-            SwarmMiniBall miniScript = mini.GetComponent<SwarmMiniBall>();
-
-            if (miniScript != null)
+            if (miniBallPrefab == null)
             {
-                miniScript.Init(this);
+                return;
             }
 
-            Rigidbody miniRb = mini.GetComponent<Rigidbody>();
-
-            if (miniRb != null)
+            for (int i = 0; i < miniBallCount; i++)
             {
-                miniRb.linearVelocity = direction * miniBallBurstSpeed;
-            }
-        }
+                float angle = (360f / miniBallCount) * i * Mathf.Deg2Rad;
+                Vector3 direction = new Vector3(Mathf.Cos(angle), 0f, Mathf.Sin(angle));
 
-        Debug.Log("Swarm ball used swarm!");
+                GameObject mini = Instantiate(miniBallPrefab, transform.position + direction * 0.6f, Quaternion.identity);
+
+                SwarmMiniBall miniScript = mini.GetComponent<SwarmMiniBall>();
+
+                if (miniScript != null)
+                {
+                    miniScript.Init(this);
+                }
+
+                Rigidbody miniRb = mini.GetComponent<Rigidbody>();
+
+                if (miniRb != null)
+                {
+                    miniRb.linearVelocity = direction * miniBallBurstSpeed;
+                }
+            }
+
+            Debug.Log("Swarm ball used swarm!");
+
+            points = 0;
+            canAbility = false;
+            abilityReadySince = -1f;
+        }
     }
 
     public void ReportHit(float slowdownAmount)
